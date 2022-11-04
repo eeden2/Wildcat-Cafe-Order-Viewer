@@ -6,6 +6,8 @@ package com.mycompany.orderviewer;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -41,27 +43,8 @@ public class orderViewer extends javax.swing.JFrame {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        borderLayout1 = new java.awt.BorderLayout();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        orderTable = new javax.swing.JTable();
-        completeOrder = new javax.swing.JButton();
-        printButton = new javax.swing.JButton();
-        refreshList = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jScrollPane1MouseClicked(evt);
-            }
-        });
-
+    public void refresher()
+    {
         try{
             Statement s = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = s.executeQuery("SELECT * FROM orders;");
@@ -69,7 +52,11 @@ public class orderViewer extends javax.swing.JFrame {
             int rows = rs.getRow();
             rs.first();
             String[][] dataSet = new String[rows][4];
-            int iterator = 0;
+            dataSet[0][0] = rs.getString("room");
+            dataSet[0][1] = rs.getString("date");
+            dataSet[0][2] = rs.getString("total");
+            dataSet[0][3] = rs.getString("identifier");
+            int iterator = 1;
             while(rs.next())
             {
                 dataSet[iterator][0] = rs.getString("room");
@@ -82,9 +69,10 @@ public class orderViewer extends javax.swing.JFrame {
             orderTable.setModel(new javax.swing.table.DefaultTableModel(
                     dataSet ,
                     new String [] {
-                             "Room", "Deliver", "Total", "Identifier"
+                            "Room", "Deliver", "Total", "Identifier"
                     }
             ) {
+                public boolean isCellEditable(int row, int column){return false;}
                 Class[] types = new Class [] {
                         java.lang.String.class, java.lang.Short.class, java.lang.String.class, java.lang.Short.class, java.lang.Integer.class
                 };
@@ -112,6 +100,7 @@ public class orderViewer extends javax.swing.JFrame {
                             "Date", "Room", "Deliver", "Total", "Identifier"
                     }
             ) {
+                public boolean isCellEditable(int row, int column){return false;}
                 Class[] types = new Class [] {
                         java.lang.String.class, java.lang.Short.class, java.lang.String.class, java.lang.Short.class, java.lang.Integer.class
                 };
@@ -122,7 +111,37 @@ public class orderViewer extends javax.swing.JFrame {
             });
 
         }
+    }
 
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        borderLayout1 = new java.awt.BorderLayout();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        orderTable = new javax.swing.JTable();
+        completeOrder = new javax.swing.JButton();
+        printButton = new javax.swing.JButton();
+        refreshList = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
+            }
+        });
+
+        refreshList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                refresher();
+            }
+        });
+
+        refresher();
 
         orderTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -192,7 +211,7 @@ public class orderViewer extends javax.swing.JFrame {
 
     private void orderTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderTableMouseClicked
         int row = orderTable.getSelectedRow();
-        int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 4));
+        int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 3));
         //orderDetails od = new orderDetails();
 
     }//GEN-LAST:event_orderTableMouseClicked
