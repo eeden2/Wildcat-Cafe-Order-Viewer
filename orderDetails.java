@@ -4,16 +4,38 @@
  */
 package com.mycompany.orderviewer;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
 /**
  *
  * @author eason
  */
 public class orderDetails extends javax.swing.JFrame {
 
+    public Connection databaseConnection;
     /**
      * Creates new form orderDetails
      */
-    public orderDetails() {
+    public orderDetails()
+    {
+        Connection c = null;
+        //Data type statement actually feeds the statement into the postGre server;
+        Statement s = null;
+        try {
+            //First setup a connection to the database
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://10.2.33.160:5432/wildcatcafe",
+                            "postgres", "1234");
+            //Instantiates a statement input
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        databaseConnection = c;
+
         initComponents();
     }
 
@@ -25,6 +47,11 @@ public class orderDetails extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        Statement s = null;
+        try{
+            s = databaseConnection.createStatement();
+        }catch(Exception e){e.printStackTrace();}
 
         staticTitle = new javax.swing.JLabel();
         orderNumber = new javax.swing.JLabel();
@@ -47,7 +74,8 @@ public class orderDetails extends javax.swing.JFrame {
         staticTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         staticTitle.setText("Order Details");
 
-        orderNumber.setText("Order #:");
+        //s.executeUpdate("")
+        orderNumber.setText("Order #: ");
         orderNumber.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         orderNumber.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
@@ -193,19 +221,19 @@ public class orderDetails extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel barNumber;
-    private javax.swing.JLabel cocoaNumber;
-    private javax.swing.JLabel coffeeCreamerType;
-    private javax.swing.JLabel coffeeNumber;
-    private javax.swing.JButton completeOrder;
-    private javax.swing.JLabel danishNumber;
-    private javax.swing.JLabel danishType;
-    private javax.swing.JLabel deliveryDay;
-    private javax.swing.JLabel moneyTotal;
-    private javax.swing.JLabel muffinNumber;
-    private javax.swing.JLabel muffinType;
-    private javax.swing.JLabel orderNumber;
-    private javax.swing.JLabel roomNumber;
+    public javax.swing.JLabel barNumber;
+    public javax.swing.JLabel cocoaNumber;
+    public javax.swing.JLabel coffeeCreamerType;
+    public javax.swing.JLabel coffeeNumber;
+    public javax.swing.JButton completeOrder;
+    public javax.swing.JLabel danishNumber;
+    public javax.swing.JLabel danishType;
+    public javax.swing.JLabel deliveryDay;
+    public javax.swing.JLabel moneyTotal;
+    public javax.swing.JLabel muffinNumber;
+    public javax.swing.JLabel muffinType;
+    public javax.swing.JLabel orderNumber;
+    public javax.swing.JLabel roomNumber;
     private javax.swing.JLabel staticTitle;
     // End of variables declaration//GEN-END:variables
 }
