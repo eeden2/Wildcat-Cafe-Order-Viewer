@@ -202,7 +202,14 @@ public class orderViewer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void completeOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeOrderActionPerformed
-        // TODO add your handling code here:
+        int row = orderTable.getSelectedRow();
+        int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 3));
+        try{
+            Statement s = databaseConnection.createStatement();
+            s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
+        }catch(Exception e){e.printStackTrace();}
+        refresher();
+
     }//GEN-LAST:event_completeOrderActionPerformed
 
     private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
@@ -212,8 +219,9 @@ public class orderViewer extends javax.swing.JFrame {
     private void orderTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderTableMouseClicked
         int row = orderTable.getSelectedRow();
         int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 3));
-        //orderDetails od = new orderDetails();
-
+        orderDetails od = new orderDetails();
+        od.setIdentifier(identifier);
+        od.setVisible(true);
     }//GEN-LAST:event_orderTableMouseClicked
 
     /**
