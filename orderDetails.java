@@ -113,6 +113,7 @@ public class orderDetails extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 try{
                     Statement s = databaseConnection.createStatement();
+                    s.executeUpdate("INSERT INTO completedorders SELECT * FROM orders WHERE identifier = "+identifier+";");
                     s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
                     dispose();
                 }catch(Exception i){i.printStackTrace();}

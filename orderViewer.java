@@ -91,10 +91,7 @@ public class orderViewer extends javax.swing.JFrame {
 
             orderTable.setModel(new javax.swing.table.DefaultTableModel(
                     new Object [][] {
-                            {null, null, null, null, null},
-                            {null, null, null, null, null},
-                            {null, null, null, null, null},
-                            {null, null, null, null, null}
+                            {"No New Orders", null, null, null, "Click Refresh to Check Again"}
                     },
                     new String [] {
                             "Date", "Room", "Deliver", "Total", "Identifier"
@@ -206,6 +203,7 @@ public class orderViewer extends javax.swing.JFrame {
         int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 3));
         try{
             Statement s = databaseConnection.createStatement();
+            s.executeUpdate("INSERT INTO completedorders SELECT * FROM orders WHERE identifier = "+identifier+";");
             s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
         }catch(Exception e){e.printStackTrace();}
         refresher();
