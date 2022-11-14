@@ -205,6 +205,7 @@ public class orderViewer extends javax.swing.JFrame {
             Statement s = databaseConnection.createStatement();
             s.executeUpdate("INSERT INTO completedorders SELECT * FROM orders WHERE identifier = "+identifier+";");
             s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
+            s.executeUpdate("DELETE FROM orderspecifications WHERE identifier ="+identifier+";");
         }catch(Exception e){e.printStackTrace();}
         refresher();
 
