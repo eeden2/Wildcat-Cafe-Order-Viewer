@@ -108,15 +108,11 @@ public class orderDetails extends javax.swing.JFrame {
 
                 detailsTitle.setText("Order Details");
 
-            }
-
-            rs = s.executeQuery("SELECT * FROM orderspecifications WHERE identifier = "+identifier);
-            if(rs.next())
-            {
                 orderSpecifications.setText(rs.getString("specifications"));
                 orderSpecifications.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
             }
+
 
 
         }catch(Exception e){e.printStackTrace();}
@@ -127,7 +123,6 @@ public class orderDetails extends javax.swing.JFrame {
                     Statement s = databaseConnection.createStatement();
                     s.executeUpdate("INSERT INTO completedorders SELECT * FROM orders WHERE identifier = "+identifier+";");
                     s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
-                    s.executeUpdate("DELETE FROM orderspecifications WHERE identifier ="+identifier+";");
                     dispose();
                 }catch(Exception i){i.printStackTrace();}
             }

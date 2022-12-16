@@ -15,7 +15,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author eason
+ * @author mrglade
  */
 
 
@@ -87,7 +87,7 @@ public class orderViewer extends javax.swing.JFrame {
 
         }catch(Exception e)
         {
-            e.printStackTrace();
+            System.out.println("No error here, just have no orders in the database.");
 
             orderTable.setModel(new javax.swing.table.DefaultTableModel(
                     new Object [][] {
@@ -140,6 +140,14 @@ public class orderViewer extends javax.swing.JFrame {
 
         refresher();
 
+        printButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                searchItem sI = new searchItem();
+                sI.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                sI.setVisible(true);
+            }
+        });
         orderTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 orderTableMouseClicked(evt);
@@ -175,7 +183,7 @@ public class orderViewer extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(18, 47, 15, 6);
         getContentPane().add(completeOrder, gridBagConstraints);
 
-        printButton.setText("Print Total Amount");
+        printButton.setText("Create Total Sheet");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -205,7 +213,6 @@ public class orderViewer extends javax.swing.JFrame {
             Statement s = databaseConnection.createStatement();
             s.executeUpdate("INSERT INTO completedorders SELECT * FROM orders WHERE identifier = "+identifier+";");
             s.executeUpdate("DELETE FROM orders WHERE identifier = "+identifier+";");
-            s.executeUpdate("DELETE FROM orderspecifications WHERE identifier ="+identifier+";");
         }catch(Exception e){e.printStackTrace();}
         refresher();
 
@@ -220,6 +227,7 @@ public class orderViewer extends javax.swing.JFrame {
         int identifier = Integer.parseInt((String) orderTable.getValueAt(row, 3));
         orderDetails od = new orderDetails();
         od.setIdentifier(identifier);
+        od.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         od.setVisible(true);
     }//GEN-LAST:event_orderTableMouseClicked
 
